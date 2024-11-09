@@ -20,7 +20,7 @@ async def task(callback_url: str, user_id: int):
     message_history = await MessageHistory.filter(user_id=user_id).order_by('created_at').all()
 
     try:
-        completion = openai_client.chat.completions.create(
+        completion = await openai_client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {
