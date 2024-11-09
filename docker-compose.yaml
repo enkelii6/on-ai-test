@@ -1,7 +1,8 @@
-version: '3.8'
-
 x-common-variables: &common-variables
   DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+  REDIS_URL: redis://redis:6379
+  RABBIT_MQ_URL: amqp://guest:guest@rabbitmq:5672
+  OPENAI_API_KEY: '*'
 
 services:
   app:
@@ -11,24 +12,44 @@ services:
     environment:
       <<: *common-variables
     ports:
-      - "8000:8000"
+      - "8001:8000"
     volumes:
-      - .:/code
+      - .:/app
     command: ["python", "-m", "code.app"]
     depends_on:
-      db:
-        condition: service_healthy
+      - db
+      - redis
+
+  celery:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    environment:
+      <<: *common-variables
+    volumes:
+      - .:/app
+    command: ["aio_celery", "worker", "code.celery:app"]
+    depends_on:
+      - db
+      - redis
 
   db:
     image: postgres:16-alpine
     environment:
       POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
     ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      - "5433:5432"
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "postgres"]
 
-volumes:
-  pgdata:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3.11.3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"

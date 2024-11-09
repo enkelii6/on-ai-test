@@ -4,3 +4,9 @@ pydantic
 uvicorn
 tortoise-orm[asyncpg]
 aerich
+fastapi-limiter
+aioredis
+aiohttp
+aio-celery[redis]
+openai
+loguru

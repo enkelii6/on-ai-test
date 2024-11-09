@@ -1,13 +1,74 @@
-# FastAPI Tortoise template
+# on.ai test assignment
 
-## You should have installed pre-commit and ruff locally:
-```
-# pip install ruff
-# pip install pre-commit
-# pre-commit install
-```
-## This will activate ```ruff check --fix``` anytime you want to commit
+Разработка REST API для обработки запросов с использованием LLM
 
-### TODO: .dockerignore, github actions ci/cd, helm values
 
-### P.S. feel free to open PR with changes
+Цель проекта
+Разработать REST API-сервис, который будет обрабатывать входящие webhook-запросы с помощью LLM и отправлять сгенерированные ответы на указанный endpoint
+
+
+Функциональные требования
+1. Реализовать endpoint для приема webhook-запросов (POST /webhook)
+2. Интегрировать любую LLM модель (например, GPT-3.5-turbo, Claude, LLaMA и т.д.), реализовать отправку и обработку запросов в формате, совместимом с OpenAI API. Как демо версию использовать бесплатные модели из сервиса openrouter.
+3. Настроить отправку результатов на заданный callback URL
+4. Реализовать поддержку истории сообщений для сохранения контекста диалога
+
+
+Технические требования
+1. Использовать любой современный фреймворк для разработки REST API для языков NodeJS или Python
+2. Обеспечить асинхронную обработку запросов
+3. Реализовать обработку ошибок и валидацию входных данных
+4. Добавить базовое логирование операций
+5. (Optional) Предоставить документацию API (Swagger/OpenAPI) (если библиотека позволяет генерировать автоматически)
+
+
+Формат входных данных
+{
+    "message": "текст запроса",
+    "callback_url": "https://example.com/callback",
+}
+
+
+Критерии оценки
+- Качество и чистота кода
+- Правильность обработки ошибок
+- Соблюдение принципов SOLID
+
+Желательно
+- Использование Docker
+- Добавление конфигурации через переменные окружения либо же .env
+- Реализация rate limiting
+- Интеграция message broker (например, RabbitMQ, Redis, Kafka) для асинхронной обработки
+
+Будет плюсом
+- Наличие документации
+- Покрытие базовыми тестами
+
+Предполагаемый стек технологий
+- Python
+- FastAPI, litestar
+- Pydantic, Marshmallow, msgspec
+- OpenRouter, OpenAI
+- Docker
+- Postgres, SQLite, JSON
+- RabbitMQ, Redis, Kafka
+
+либо
+- Node.js
+- Express, NestJS, Fastify, Hono, 
+- Zod
+- OpenRouter, OpenAI
+- Docker
+- Postgres, SQLite, JSON
+- RabbitMQ, Redis, Kafka
+
+
+⚡️Дедлайн
+Завтра, 22:00
+
+
+⚠️Стажировка
+Если поняли, что не вывозите, но хотите работать в нашей команде – можете выполнить эту задачу, за исключением:
+- логирования
+- обработки ошибок
+- валидации входных данных
